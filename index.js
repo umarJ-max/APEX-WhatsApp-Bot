@@ -193,21 +193,35 @@ _15s cooldown per command_`
 
   if (body === '.help') {
     await msg.react('👋');
-    await client.sendMessage(chatId,
+    try {
+      const ownerNum = process.env.OWNER_NUMBER;
+      const ownerContact = await client.getContactById(`${ownerNum}@c.us`);
+      await client.sendMessage(chatId, ownerContact);
+      await client.sendMessage(chatId,
+`🖤 *A P E X — SUPPORT*
+─────────────────────
+
+got a question? hit up the owner 👆
+
+─────────────────────
+_APEX by Umar J_`
+      );
+    } catch {
+      await client.sendMessage(chatId,
 `🖤 *A P E X — SUPPORT*
 ─────────────────────
 
 got a question about the bot?
 hit up the owner 👇
 
-📸 *Instagram:* @umar.j0_
+📱 *WhatsApp:* +92 316 6392586
 
 ─────────────────────
 _APEX by Umar J_`
-    );
+      );
+    }
     return;
   }
-
   const allCommands = modules.flatMap(m => m.commands);
   const isKnownCommand = allCommands.some(cmd => body === cmd || body.startsWith(cmd + ' '));
   if (!isKnownCommand) return;

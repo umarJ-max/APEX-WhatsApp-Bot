@@ -13,6 +13,7 @@ import * as reactionsCmd from './reactions.js';
 import * as userCmd from './user.js';
 import * as islamCmd from './islam.js';
 import * as groupCmd from './group.js';
+import { handleAntilink } from './group.js';
 import * as ownerCmd from './owner.js';
 import * as stickerCmd from './sticker.js';
 import * as musicCmd from './music.js';
@@ -100,6 +101,10 @@ async function handleMessage(msg) {
   if (msg.fromMe && !msg.author) return;
 
   const userId = msg.author || msg.from;
+
+  // Check antilink on every message
+  await handleAntilink(msg, client);
+
   // Get the actual chat to reply to (group ID or DM ID)
   const chatId = await getChatId(msg);
 
@@ -168,7 +173,9 @@ _(reply to someone's msg to target them)_
 ❯ *.prayertime <city>* — prayer times
 
 🎨 *Sticker*
-❯ *.sticker* — send/reply to an image
+❯ *.sticker* — convert image to sticker
+❯ *.take <name>* — reply to sticker to rename it
+❯ *.take <name> | <author>* — rename with custom author too
 
 👥 *Group* _(group admins only)_
 ❯ *.tagall* — mention everyone
@@ -178,6 +185,8 @@ _(reply to someone's msg to target them)_
 ❯ *.invite* — create invite link
 ❯ *.opengroup* — open group chat
 ❯ *.closegroup* — close group chat
+❯ *.groupinfo* — group details & admins
+❯ *.antilink* — toggle link deletion on/off
 
 👤 *User*
 ❯ *.ping* — check bot latency
@@ -259,6 +268,7 @@ function wrap(msg) {
 }
 client.on('message', wrap);
 client.on('message_create', wrap);
+
 
 console.log('\n  🚀 Initializing APEX...\n');
 client.initialize();

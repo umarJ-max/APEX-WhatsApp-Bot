@@ -1,4 +1,4 @@
-import { apexWrap } from './apexWrap.js';
+import { apexWrap, apexError } from './apexWrap.js';
 import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';

@@ -1,0 +1,37 @@
+# Environment variables (contains sensitive data)
+.env
+
+# Node.js dependencies
+node_modules/
+
+# WhatsApp session & cache data
+.session/
+.session-wa/
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+dist/
+build/
+
+# Runtime images
+Menu.jpg
+Prayer.jpg
+
+# Temporary files
+tmp/
+temp/

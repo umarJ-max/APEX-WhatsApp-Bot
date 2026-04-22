@@ -18,10 +18,13 @@ import * as ownerCmd from './owner.js';
 import * as stickerCmd from './sticker.js';
 import * as musicCmd from './music.js';
 import * as downloaderCmd from './downloader.js';
+import * as toolsCmd from './tools.js';
+import * as eventsCmd from './events.js';
+import { handleWelcome, handleGoodbye } from './events.js';
 
 const { Client, LocalAuth, MessageMedia } = pkg;
 
-const modules = [aiCmd, funCmd, reactionsCmd, userCmd, islamCmd, groupCmd, ownerCmd, stickerCmd, musicCmd, downloaderCmd];
+const modules = [aiCmd, funCmd, reactionsCmd, userCmd, islamCmd, groupCmd, ownerCmd, stickerCmd, musicCmd, downloaderCmd, toolsCmd, eventsCmd];
 
 const noCooldown = [
   '.menu', '.help', '.ping', '.info', '.uptime',
@@ -79,6 +82,14 @@ _built by Umar J_`
 
 client.on('disconnected', (reason) => {
   console.log('  ❌ Disconnected:', reason);
+});
+
+client.on('group_join', (notification) => {
+  handleWelcome(notification, client);
+});
+
+client.on('group_leave', (notification) => {
+  handleGoodbye(notification, client);
 });
 
 // Get the real chat ID where the message was sent
@@ -194,6 +205,26 @@ _(reply to someone's msg to target them)_
 ❯ *.info* — show bot info
 
 ❯ *.help* — contact owner
+
+🛠️ *Tools*
+❯ *.weather <city>* — current weather
+❯ *.translate <lang> <text>* — translate text
+❯ *.tts <text>* — convert text to audio message
+❯ *.calc <expression>* — calculator
+❯ *.remind <mins> <msg>* — set a reminder
+❯ *.crypto <coin>* — live crypto price
+❯ *.news* — trending headlines
+❯ *.news tech/sports/world/bbc* — by category
+❯ *.meme* — random meme
+❯ *.lyrics <song>* — song lyrics
+❯ *.lyrics <song> | <artist>* — with artist name
+
+👥 *Group Events* _(admins only)_
+❯ *.welcome* — toggle welcome messages
+❯ *.goodbye* — toggle goodbye messages
+❯ *.setrules <text>* — set group rules
+❯ *.delrules* — clear group rules
+❯ *.rules* — view group rules
 ─────────────────────
 _15s cooldown per command_`
     });

@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="Prayer.jpg" width="120" height="120" style="border-radius: 50%" alt="APEX Logo"/>
-
 # ⚡ A P E X — WhatsApp Bot
 
 **A powerful, free, self-hosted WhatsApp bot with 80+ commands**

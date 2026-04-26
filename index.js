@@ -20,11 +20,15 @@ import * as musicCmd from './music.js';
 import * as downloaderCmd from './downloader.js';
 import * as toolsCmd from './tools.js';
 import * as eventsCmd from './events.js';
+import * as extrasCmd from './extras.js';
+import * as warnCmd from './warn.js';
+import * as smartCmd from './smart.js';
+import * as healthCmd from './health.js';
 import { handleWelcome, handleGoodbye } from './events.js';
 
 const { Client, LocalAuth, MessageMedia } = pkg;
 
-const modules = [aiCmd, funCmd, reactionsCmd, userCmd, islamCmd, groupCmd, ownerCmd, stickerCmd, musicCmd, downloaderCmd, toolsCmd, eventsCmd];
+const modules = [aiCmd, funCmd, reactionsCmd, userCmd, islamCmd, groupCmd, ownerCmd, stickerCmd, musicCmd, downloaderCmd, toolsCmd, eventsCmd, extrasCmd, warnCmd, smartCmd, healthCmd];
 
 const noCooldown = [
   '.menu', '.help', '.ping', '.info', '.uptime',
@@ -197,7 +201,7 @@ _(reply to someone's msg to target them)_
 ❯ *.opengroup* — open group chat
 ❯ *.closegroup* — close group chat
 ❯ *.groupinfo* — group details & admins
-❯ *.antilink* — toggle link deletion on/off
+❯ *.antilink on/off* — toggle link auto-deletion
 
 👤 *User*
 ❯ *.ping* — check bot latency
@@ -205,6 +209,43 @@ _(reply to someone's msg to target them)_
 ❯ *.info* — show bot info
 
 ❯ *.help* — contact owner
+
+🎮 *Fun & Games*
+❯ *.wyr* — would you rather
+❯ *.trivia* — random trivia question
+❯ *.compliment* — random compliment
+❯ *.insult* — playful insult
+❯ *.poll <q> | <opt1> | <opt2>* — create a poll
+
+🛠️ *Extras*
+❯ *.qr <text>* — generate QR code
+❯ *.shorturl <url>* — shorten a URL
+❯ *.define <word>* — dictionary definition
+❯ *.time <timezone>* — current time anywhere
+❯ *.ascii <text>* — ASCII art text
+
+🏥 *Health*
+❯ *.bmi <weight> <height>* — BMI calculator
+❯ *.calories <food>* — calorie info
+❯ *.medicine <name>* — medicine details
+❯ *.symptoms <symptoms>* — possible causes
+❯ *.workout <goal>* — weekly workout plan
+❯ *.diet <goal>* — daily diet plan
+❯ *.water <weight kg>* — daily water intake
+❯ *.mentalhealth* — mental health tips
+
+⚠️ *Warnings* _(admins only, reply to use)_
+❯ *.warn on/off* — enable or disable warn system
+❯ *.warn* — warn a member _(reply to use)_
+❯ *.warnings* — check someone's warnings _(reply to use)_
+❯ *.clearwarn* — clear someone's warnings _(reply to use)_
+
+🧠 *Smart*
+❯ *.summarize* — reply to summarize a message
+❯ *.fix <text>* — fix grammar & spelling
+❯ *.currency <amt> <from> <to>* — live conversion
+❯ *.zodiac <sign>* — daily horoscope
+❯ *.wiki <topic>* — Wikipedia summary
 
 🛠️ *Tools*
 ❯ *.weather <city>* — current weather
@@ -220,8 +261,8 @@ _(reply to someone's msg to target them)_
 ❯ *.lyrics <song> | <artist>* — with artist name
 
 👥 *Group Events* _(admins only)_
-❯ *.welcome* — toggle welcome messages
-❯ *.goodbye* — toggle goodbye messages
+❯ *.welcome on/off* — toggle welcome messages
+❯ *.goodbye on/off* — toggle goodbye messages
 ❯ *.setrules <text>* — set group rules
 ❯ *.delrules* — clear group rules
 ❯ *.rules* — view group rules

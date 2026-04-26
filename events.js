@@ -1,26 +1,36 @@
 import { apexWrap, apexError } from './apexWrap.js';
 import { isOwnerOrAdmin } from './permissions.js';
 
-// In-memory store for group rules and welcome/goodbye settings
 const groupRules = new Map();
 const welcomeEnabled = new Set();
 const goodbyeEnabled = new Set();
 
-export const commands = ['.welcome', '.goodbye', '.rules', '.setrules', '.delrules'];
+export const commands = [
+  '.welcome on', '.welcome off', '.welcome',
+  '.goodbye on', '.goodbye off', '.goodbye',
+  '.rules', '.setrules', '.delrules'
+];
 
-// Called from index.js on group_join and group_leave events
 export async function handleWelcome(notification, client) {
   try {
     const chat = await notification.getChat();
     if (!welcomeEnabled.has(chat.id._serialized)) return;
-    const contact = await notification.getContact();
-    const name = contact.pushname || contact.name || contact.number || 'Someone';
-    await client.sendMessage(chat.id._serialized, apexWrap(
-      `👋 *Welcome, ${name}!*\n\n` +
-      `Glad to have you here 🖤\n` +
-      `Type *.menu* to see what I can do.` +
-      (groupRules.has(chat.id._serialized) ? `\n\n📋 *Group Rules:*\n${groupRules.get(chat.id._serialized)}` : '')
-    ));
+    // Get name safely
+    let name = 'New Member';
+    try {
+      const contact = await notification.getContact();
+      name = contact?.pushname || contact?.name || contact?.number || 'New Member';
+    } catch {}
+    const rules = groupRules.has(chat.id._serialized)
+      ? `\n\n📋 *Group Rules:*\n${groupRules.get(chat.id._serialized)}`
+      : '';
+    await client.sendMessage(chat.id._serialized,
+`👋 *Welcome to the group, ${name}!*
+
+We're glad to have you here 🖤
+Feel free to introduce yourself.
+Type *.menu* to see what I can do.${rules}`
+    );
   } catch (e) { console.error('Welcome error:', e.message); }
 }
 
@@ -28,18 +38,24 @@ export async function handleGoodbye(notification, client) {
   try {
     const chat = await notification.getChat();
     if (!goodbyeEnabled.has(chat.id._serialized)) return;
-    const contact = await notification.getContact();
-    const name = contact.pushname || contact.name || 'Someone';
-    await client.sendMessage(chat.id._serialized, apexWrap(`👋 *${name} has left the group.*\n\nTake care 🖤`));
+    let name = 'A member';
+    try {
+      const contact = await notification.getContact();
+      name = contact?.pushname || contact?.name || contact?.number || 'A member';
+    } catch {}
+    await client.sendMessage(chat.id._serialized,
+`👋 *${name} has left the group.*
+
+Take care, hope to see you again 🖤`
+    );
   } catch (e) { console.error('Goodbye error:', e.message); }
 }
 
 export async function handle(msg, body, client) {
   const chatId = msg._chatId || msg.from;
 
-  // Check admin for toggle commands
-  const adminRequired = ['.welcome', '.goodbye', '.setrules', '.delrules'];
-  if (adminRequired.some(c => body === c || body.startsWith(c + ' '))) {
+  const adminRequired = ['.welcome', '.welcome on', '.welcome off', '.goodbye', '.goodbye on', '.goodbye off', '.setrules', '.delrules'];
+  if (adminRequired.includes(body)) {
     const allowed = await isOwnerOrAdmin(msg, client);
     if (!allowed) {
       await msg.react('🔒');
@@ -48,35 +64,35 @@ export async function handle(msg, body, client) {
     }
   }
 
-  // .welcome — toggle welcome messages
-  if (body === '.welcome') {
-    if (welcomeEnabled.has(chatId)) {
-      welcomeEnabled.delete(chatId);
-      await msg.react('✅');
-      await client.sendMessage(chatId, apexWrap('👋 Welcome messages *disabled*.'));
-    } else {
+  // .welcome on/off
+  if (body === '.welcome on' || body === '.welcome off' || body === '.welcome') {
+    if (body === '.welcome on' || (body === '.welcome' && !welcomeEnabled.has(chatId))) {
       welcomeEnabled.add(chatId);
       await msg.react('✅');
-      await client.sendMessage(chatId, apexWrap('👋 Welcome messages *enabled*. New members will be greeted 🖤'));
+      await client.sendMessage(chatId, apexWrap('👋 Welcome messages *ON* 🖤'));
+    } else {
+      welcomeEnabled.delete(chatId);
+      await msg.react('✅');
+      await client.sendMessage(chatId, apexWrap('👋 Welcome messages *OFF*'));
     }
     return;
   }
 
-  // .goodbye — toggle goodbye messages
-  if (body === '.goodbye') {
-    if (goodbyeEnabled.has(chatId)) {
-      goodbyeEnabled.delete(chatId);
-      await msg.react('✅');
-      await client.sendMessage(chatId, apexWrap('👋 Goodbye messages *disabled*.'));
-    } else {
+  // .goodbye on/off
+  if (body === '.goodbye on' || body === '.goodbye off' || body === '.goodbye') {
+    if (body === '.goodbye on' || (body === '.goodbye' && !goodbyeEnabled.has(chatId))) {
       goodbyeEnabled.add(chatId);
       await msg.react('✅');
-      await client.sendMessage(chatId, apexWrap('👋 Goodbye messages *enabled*. Leaving members will be seen off 🖤'));
+      await client.sendMessage(chatId, apexWrap('👋 Goodbye messages *ON* 🖤'));
+    } else {
+      goodbyeEnabled.delete(chatId);
+      await msg.react('✅');
+      await client.sendMessage(chatId, apexWrap('👋 Goodbye messages *OFF*'));
     }
     return;
   }
 
-  // .setrules <rules text>
+  // .setrules
   if (body.startsWith('.setrules ')) {
     const rules = body.slice(10).trim();
     groupRules.set(chatId, rules);
@@ -97,7 +113,7 @@ export async function handle(msg, body, client) {
   if (body === '.rules') {
     const rules = groupRules.get(chatId);
     if (!rules) {
-      await client.sendMessage(chatId, apexError('no rules set for this group\nadmins can set rules with *.setrules <text>*'));
+      await client.sendMessage(chatId, apexError('no rules set\nadmins can set rules with *.setrules <text>*'));
       return;
     }
     await msg.react('📋');

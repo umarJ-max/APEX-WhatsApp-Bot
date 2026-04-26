@@ -144,15 +144,24 @@ export async function handle(msg, body, client) {
   if (body === '.meme') {
     await msg.react('😂');
     try {
-      const r = await fetch('https://www.reddit.com/r/memes/random.json?limit=1', {
-        headers: { 'User-Agent': 'APEX-Bot/1.0' }
+      // Fetch from Reddit listing (more reliable than random.json)
+      const subs = ['memes', 'dankmemes'];
+      const sub = subs[Math.floor(Math.random() * subs.length)];
+      const r = await fetch(`https://www.reddit.com/r/${sub}.json?limit=50&t=day`, {
+        headers: { 'User-Agent': 'APEX-Bot/2.0' }
       });
+      if (!r.ok) throw new Error('reddit failed');
       const rd = await r.json();
-      const post = rd?.[0]?.data?.children?.[0]?.data;
-      if (!post?.url || !post.url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) throw new Error('bad post');
+      const posts = rd?.data?.children?.filter(p => {
+        const u = p?.data?.url || '';
+        return (u.endsWith('.jpg') || u.endsWith('.jpeg') || u.endsWith('.png') || u.endsWith('.webp')) && !p.data.over_18;
+      });
+      if (!posts || posts.length === 0) throw new Error('no image posts');
+      const post = posts[Math.floor(Math.random() * posts.length)].data;
       const media = await MessageMedia.fromUrl(post.url, { unsafeMime: true });
       await client.sendMessage(chatId, media, { caption: apexWrap(`😂 *${post.title}*`) });
-    } catch {
+    } catch (e) {
+      console.error('Meme error:', e.message);
       await client.sendMessage(chatId, apexError('meme machine broke 😅 try again'));
     }
     return;

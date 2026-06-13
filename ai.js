@@ -69,10 +69,10 @@ async function askGemini(prompt) {
 // Main askAI — tries David → Groq → Gemini
 export async function askAI(prompt) {
   const providers = [
-  { name: 'David', fn: askDavid },
-  { name: 'Groq',  fn: askGroq  },
-  { name: 'Gemini', fn: askGemini }
-];
+    { name: 'David', fn: askDavid },
+    { name: 'Groq',  fn: askGroq  },
+    { name: 'Gemini', fn: askGemini }
+  ];
   let lastError;
   for (const { name, fn } of providers) {
     try {
@@ -143,7 +143,10 @@ export async function handle(msg, body, client) {
     }
     await client.sendMessage(chatId, apexThinking('loading disrespect...'));
     try {
-      const roast = await askAI(`Give me a savage but funny roast for ${target}. Keep it short and witty. Just the roast.`);
+      // Add randomness to prevent cached/repeated responses
+      const styles = ['sarcastic', 'savage', 'witty', 'brutal', 'clever', 'dry humor', 'shakespearean', 'gen-z'];
+      const style = styles[Math.floor(Math.random() * styles.length)];
+      const roast = await askAI(`Give me a unique ${style} style roast for ${target}. Be creative, don't repeat common roasts. Just the roast, no intro.`);
       await client.sendMessage(chatId, apexWrap(`💀 ${roast}`));
     } catch {
       await client.sendMessage(chatId, apexError('roast machine broke 😅'));

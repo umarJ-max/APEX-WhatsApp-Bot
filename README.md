@@ -1,7 +1,7 @@
 <div align="center">
 
 <p align="center">
-  <img src="Prayer.jpg" width="400" alt="APEX Logo"/>
+  <img src="Prayer.jpg" width="500" alt="APEX Logo"/>
 </p>
 
 # ⚡ A P E X — WhatsApp Bot

@@ -112,7 +112,10 @@ export async function handle(msg, body, client) {
     await msg.react('😂');
     await client.sendMessage(chatId, apexThinking('cooking a joke...'));
     try {
-      const joke = await askAI('Tell me one short funny joke. Just the joke, no intro.');
+      const jokeTypes = ['pun', 'one-liner', 'dark humor', 'dad joke', 'anti-joke', 'self-deprecating', 'absurd', 'clever'];
+      const jokeType = jokeTypes[Math.floor(Math.random() * jokeTypes.length)];
+      const seed = Math.random().toString(36).slice(2, 7);
+      const joke = await askAI(`Tell me one completely unique ${jokeType} joke that I have never heard before. Be original and creative. Seed:${seed}. Just the joke, no intro.`);
       await client.sendMessage(chatId, apexWrap(`😂 ${joke}`));
     } catch {
       await client.sendMessage(chatId, apexError('joke machine broke, try again 😅'));
@@ -125,7 +128,9 @@ export async function handle(msg, body, client) {
     await msg.react('🤯');
     await client.sendMessage(chatId, apexThinking('pulling a fact...'));
     try {
-      const fact = await askAI('Give me one random mind-blowing fact. Just the fact, no intro.');
+      const factTopics = ['science', 'history', 'space', 'human body', 'animals', 'psychology', 'technology', 'food', 'geography', 'mathematics'];
+      const factTopic = factTopics[Math.floor(Math.random() * factTopics.length)];
+      const fact = await askAI(`Give me one surprising and unique ${factTopic} fact that most people don't know. Just the fact, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(`🤯 ${fact}`));
     } catch {
       await client.sendMessage(chatId, apexError('fact machine broke, try again 😅'));
@@ -146,7 +151,7 @@ export async function handle(msg, body, client) {
       // Add randomness to prevent cached/repeated responses
       const styles = ['sarcastic', 'savage', 'witty', 'brutal', 'clever', 'dry humor', 'shakespearean', 'gen-z'];
       const style = styles[Math.floor(Math.random() * styles.length)];
-      const roast = await askAI(`Give me a unique ${style} style roast for ${target}. Be creative, don't repeat common roasts. Just the roast, no intro.`);
+      const roast = await askAI(`Give me a unique ${style} style roast for ${target}. Be creative, don't repeat common roasts. Just the roast, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(`💀 ${roast}`));
     } catch {
       await client.sendMessage(chatId, apexError('roast machine broke 😅'));

@@ -176,6 +176,7 @@ async function handleMessage(msg) {
 ❯ *.dance* — dance
 ❯ *.happy* — send happiness
 ❯ *.smile* — smile
+❯ *.waifu* — summon a random waifu 🌸
 ❯ *.kill* — kill someone
 ❯ *.yeet* — yeet someone
 ❯ *.nom* — nom someone

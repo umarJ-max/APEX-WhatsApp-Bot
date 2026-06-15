@@ -29,7 +29,9 @@ export async function isAdmin(msg, client) {
       } catch {}
     }
 
-    const participant = chat.participants?.find(p => p.id.user === senderNumber);
+    const participant = chat.participants?.find(p =>
+      p.id.user === senderNumber || p.id._serialized === raw
+    );
     return participant?.isAdmin === true || participant?.isSuperAdmin === true;
   } catch (e) {
     console.error('isAdmin error:', e.message);

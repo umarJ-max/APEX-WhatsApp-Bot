@@ -83,7 +83,7 @@ export async function handle(msg, body, client) {
     } catch {
       // fallback to AI
       try {
-        const result = await askAI(`What is the current time and date in ${city}? Reply in format: Time: HH:MM AM/PM, Date: Day, Month DD YYYY`);
+        const result = await askAI(`What is the current time and date in ${city}? Reply in format: Time: HH:MM AM/PM, Date: Day, Month DD YYYY Unique seed:${Math.random().toString(36).slice(2,6)}`);
         await client.sendMessage(chatId, apexWrap(`🕐 *Time in ${city}*\n\n${result}`));
       } catch {
         await client.sendMessage(chatId, apexError(`timezone not found for "${city}"\nexample: .time Asia/Karachi`));
@@ -97,7 +97,9 @@ export async function handle(msg, body, client) {
     await msg.react('🤔');
     await client.sendMessage(chatId, apexThinking('cooking a dilemma...'));
     try {
-      const result = await askAI('Give me one fun "Would You Rather" question with two options. Format exactly like this:\n🤔 *Would you rather...*\n\n🅰️ Option one here\n\n*OR*\n\n🅱️ Option two here\n\nJust the question, nothing else.');
+      const wyrThemes = ['funny', 'tough', 'bizarre', 'food-related', 'superpower', 'travel', 'social', 'money-related', 'survival'];
+      const wyrTheme = wyrThemes[Math.floor(Math.random() * wyrThemes.length)];
+      const result = await askAI(`Give me one unique ${wyrTheme} "Would You Rather" question. Be creative and different each time. Format exactly:\n🤔 *Would you rather...*\n\n🅰️ Option one here\n\n*OR*\n\n🅱️ Option two here\n\nJust the question, nothing else. Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(result));
     } catch {
       await client.sendMessage(chatId, apexError('could not generate question'));
@@ -139,7 +141,9 @@ export async function handle(msg, body, client) {
   if (body === '.compliment') {
     await msg.react('💝');
     try {
-      const result = await askAI('Give me one short genuine compliment. Just the compliment, no intro.');
+      const complimentStyles = ['sweet', 'funny', 'deep', 'motivational', 'poetic', 'wholesome', 'clever'];
+      const cStyle = complimentStyles[Math.floor(Math.random() * complimentStyles.length)];
+      const result = await askAI(`Give me one unique ${cStyle} compliment. Be creative, don't repeat common ones. Just the compliment, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(`💝 ${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('compliment machine broke 😅'));
@@ -151,7 +155,9 @@ export async function handle(msg, body, client) {
   if (body === '.insult') {
     await msg.react('💀');
     try {
-      const result = await askAI('Give me one savage but funny playful insult. Keep it witty, not mean. Just the insult, no intro.');
+      const insultStyles = ['sarcastic', 'shakespearean', 'gen-z', 'old english', 'nerdy', 'poetic', 'dry humor'];
+      const iStyle = insultStyles[Math.floor(Math.random() * insultStyles.length)];
+      const result = await askAI(`Give me one unique ${iStyle} style playful insult. Be creative and witty, not mean. Just the insult, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(`💀 ${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('insult machine broke 😅'));
@@ -171,7 +177,7 @@ export async function handle(msg, body, client) {
       await client.sendMessage(chatId, apexWrap(`🔤 *ASCII Art*\n\n\`\`\`${ascii}\`\`\``));
     } catch {
       try {
-        const result = await askAI(`Generate ASCII art text for the word "${text}" using simple characters. Just the ASCII art, no explanation.`);
+        const result = await askAI(`Generate ASCII art text for the word "${text}" using simple characters. Just the ASCII art, no explanation. Unique seed:${Math.random().toString(36).slice(2,6)}`);
         await client.sendMessage(chatId, apexWrap(`🔤 *ASCII Art*\n\n\`\`\`${result}\`\`\``));
       } catch {
         await client.sendMessage(chatId, apexError('could not generate ASCII art'));

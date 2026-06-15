@@ -58,7 +58,7 @@ export async function handle(msg, body, client) {
     await msg.react('🍽️');
     await client.sendMessage(chatId, apexThinking('checking calories...'));
     try {
-      const result = await askAI(`Give me the approximate calorie count and basic nutrition info (protein, carbs, fat) for: "${food}". Keep it short and formatted with emojis. Just the facts.`);
+      const result = await askAI(`Give me the approximate calorie count and basic nutrition info (protein, carbs, fat) for: "${food}". Keep it short and formatted with emojis. Just the facts. Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(`🍽️ *Calories — ${food}*\n\n${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('could not fetch calorie info'));

@@ -52,7 +52,7 @@ export async function handle(msg, body, client) {
     await msg.react('🌐');
     await client.sendMessage(chatId, apexThinking('translating...'));
     try {
-      const result = await askAI(`Translate this text to ${lang}. Reply with ONLY the translation, nothing else:\n"${text}"`);
+      const result = await askAI(`Translate this text to ${lang}. Reply with ONLY the translation, nothing else:\n"${text}" Unique seed:${Math.random().toString(36).slice(2,6)}`);
       await client.sendMessage(chatId, apexWrap(`🌐 *Translation to ${lang}*\n\n${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('translation failed'));
@@ -131,7 +131,7 @@ export async function handle(msg, body, client) {
       await client.sendMessage(chatId, apexWrap(`📰 *${endpoint.toUpperCase()} News*\n\n${headlines}`));
     } catch {
       try {
-        const news = await askAI(`Give me 5 ${endpoint} news headlines. Numbered list only.`);
+        const news = await askAI(`Give me 5 ${endpoint} news headlines. Numbered list only. Unique seed:${Math.random().toString(36).slice(2,6)}`);
         await client.sendMessage(chatId, apexWrap(`📰 *${endpoint.toUpperCase()} News*\n\n${news}`));
       } catch {
         await client.sendMessage(chatId, apexError('could not fetch news'));

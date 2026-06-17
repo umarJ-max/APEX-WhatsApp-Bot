@@ -24,7 +24,7 @@ export async function handle(msg, body, client) {
     await client.sendMessage((msg._chatId || msg.from), apexThinking('summoning rizz...'));
     try {
       const styles = ['smooth', 'cheesy', 'clever', 'funny', 'poetic', 'nerdy', 'romantic', 'bold'];
-      const line = await askAI(`Give me one unique ${pick(styles)} pickup line. Be creative, don't use overused lines. Just the line, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const line = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me one unique ${pick(styles)} pickup line. Be creative, don't use overused lines. Just the line, no intro.`);
       await client.sendMessage((msg._chatId || msg.from), apexWrap(`😏 ${line}`));
     } catch {
       await client.sendMessage((msg._chatId || msg.from), apexError());
@@ -38,7 +38,7 @@ export async function handle(msg, body, client) {
     await client.sendMessage((msg._chatId || msg.from), apexThinking());
     try {
       const levels = ['mild', 'medium', 'spicy', 'deep', 'funny', 'embarrassing'];
-      const truth = await askAI(`Give me one unique ${pick(levels)} truth question for a party game. Be creative, don't repeat common questions. Just the question, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const truth = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me one unique ${pick(levels)} truth question for a party game. Be creative, don't repeat common questions. Just the question, no intro.`);
       await client.sendMessage((msg._chatId || msg.from), apexWrap(`👀 *Truth:*\n${truth}`));
     } catch {
       await client.sendMessage((msg._chatId || msg.from), apexError());
@@ -52,7 +52,7 @@ export async function handle(msg, body, client) {
     await client.sendMessage((msg._chatId || msg.from), apexThinking());
     try {
       const types = ['funny', 'silly', 'creative', 'social', 'physical', 'awkward'];
-      const dare = await askAI(`Give me one unique ${pick(types)} dare challenge for a party game. Keep it clean, creative, and different each time. Just the dare, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const dare = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me one unique ${pick(types)} dare challenge for a party game. Keep it clean, creative, and different each time. Just the dare, no intro.`);
       await client.sendMessage((msg._chatId || msg.from), apexWrap(`😈 *Dare:*\n${dare}`));
     } catch {
       await client.sendMessage((msg._chatId || msg.from), apexError());
@@ -66,7 +66,7 @@ export async function handle(msg, body, client) {
     await client.sendMessage((msg._chatId || msg.from), apexThinking('pulling a fact...'));
     try {
       const topics = ['science', 'history', 'space', 'human body', 'animals', 'psychology', 'technology', 'food', 'geography', 'mathematics', 'nature', 'sports'];
-      const fact = await askAI(`Give me one surprising and unique ${pick(topics)} fact that most people don't know. Just the fact, no intro. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const fact = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me one surprising and unique ${pick(topics)} fact that most people don't know. Just the fact, no intro.`);
       await client.sendMessage((msg._chatId || msg.from), apexWrap(`🧠 *Random Fact:*\n${fact}`));
     } catch {
       await client.sendMessage((msg._chatId || msg.from), apexError());
@@ -133,7 +133,7 @@ export async function handle(msg, body, client) {
     await client.sendMessage((msg._chatId || msg.from), apexThinking('finding a quote...'));
     try {
       const themes = ['motivation', 'life', 'success', 'wisdom', 'friendship', 'love', 'courage', 'discipline', 'happiness'];
-      const quote = await askAI(`Give me one unique ${pick(themes)} quote with the author name. Don't use overused quotes. Format: "quote" — Author Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const quote = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me one unique ${pick(themes)} quote with the author name. Don't use overused quotes. Format: "quote" — Author`);
       await client.sendMessage((msg._chatId || msg.from), apexWrap(`💬 ${quote}`));
     } catch {
       await client.sendMessage((msg._chatId || msg.from), apexError());

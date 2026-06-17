@@ -23,7 +23,7 @@ export async function handle(msg, body, client) {
         await client.sendMessage(chatId, apexError('message is too short to summarize'));
         return;
       }
-      const result = await askAI(`Summarize this message in 2-3 short sentences. Be clear and concise:\n\n"${text}" Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const result = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Summarize this message in 2-3 short sentences. Be clear and concise:\n\n"${text}"`);
       await client.sendMessage(chatId, apexWrap(`📝 *Summary*\n\n${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('could not summarize'));
@@ -41,7 +41,7 @@ export async function handle(msg, body, client) {
     await msg.react('✏️');
     await client.sendMessage(chatId, apexThinking('fixing...'));
     try {
-      const result = await askAI(`Fix the grammar and spelling of this text. Reply with ONLY the corrected text, nothing else. Unique seed:${Math.random().toString(36).slice(2,6)}:\n"${text}"`);
+      const result = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Fix the grammar and spelling of this text. Reply with ONLY the corrected text, nothing else:\n"${text}"`);
       await client.sendMessage(chatId, apexWrap(`✏️ *Fixed*\n\n${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('could not fix text'));
@@ -80,7 +80,7 @@ export async function handle(msg, body, client) {
     } catch {
       // AI fallback
       try {
-        const result = await askAI(`What is the current exchange rate? Convert ${amount} ${from} to ${to}. Give only the converted amount and rate, no extra text. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+        const result = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] What is the current exchange rate? Convert ${amount} ${from} to ${to}. Give only the converted amount and rate, no extra text.`);
         await client.sendMessage(chatId, apexWrap(`💱 *Currency*\n\n${result}`));
       } catch {
         await client.sendMessage(chatId, apexError(`could not convert ${from} to ${to}\nmake sure currency codes are correct (USD, PKR, EUR...)`));
@@ -100,7 +100,7 @@ export async function handle(msg, body, client) {
     await msg.react('⭐');
     await client.sendMessage(chatId, apexThinking('reading the stars...'));
     try {
-      const result = await askAI(`Give me today's horoscope for ${sign}. Include: love, career, and general vibe. Keep it fun, short, and positive. Format nicely with emojis. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+      const result = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me today's horoscope for ${sign}. Include: love, career, and general vibe. Keep it fun, short, and positive. Format nicely with emojis.`);
       await client.sendMessage(chatId, apexWrap(`⭐ *${sign.charAt(0).toUpperCase() + sign.slice(1)} Horoscope*\n\n${result}`));
     } catch {
       await client.sendMessage(chatId, apexError('could not fetch horoscope'));
@@ -132,7 +132,7 @@ export async function handle(msg, body, client) {
     } catch {
       // AI fallback
       try {
-        const result = await askAI(`Give me a brief Wikipedia-style summary of "${topic}" in 3-4 sentences. Unique seed:${Math.random().toString(36).slice(2,6)}`);
+        const result = await askAI(`[seed:${Math.random().toString(36).slice(2,6)}] Give me a brief Wikipedia-style summary of "${topic}" in 3-4 sentences.`);
         await client.sendMessage(chatId, apexWrap(`📚 *${topic}*\n\n${result}`));
       } catch {
         await client.sendMessage(chatId, apexError(`could not find "${topic}" on Wikipedia`));

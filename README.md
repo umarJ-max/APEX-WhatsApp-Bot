@@ -6,7 +6,7 @@
 
 # ⚡ A P E X — WhatsApp Bot
 
-**A powerful, free, self-hosted WhatsApp bot with 80+ commands**
+**A powerful, free, self-hosted WhatsApp bot with 100+ commands**
 *AI-powered • Group Management • Health • Entertainment • Tools*
 
 [![Node.js](https://img.shields.io/badge/Node.js-v18+-green?style=flat-square&logo=node.js)](https://nodejs.org)
